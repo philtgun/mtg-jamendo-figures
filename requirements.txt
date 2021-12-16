@@ -1,1 +1,4 @@
-# Only add explicit dependencies with dep==version
+matplotlib==3.5.1
+numpy==1.21.4
+pandas==1.3.5
+seaborn==0.11.2

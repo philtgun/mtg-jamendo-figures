@@ -1,16 +1,8 @@
-# Python Template
+# Scripts to generate figures
 
-Has pre-commit hooks that I like with line length of 120.
-
-```shell
-python3.9 -m venv venv
-source venv/bin/activate.fish
-pip install --upgrade pip setuptools wheel
-```
-
-## Dev
-Update all the revs to the latest versions
+## top_tags
 
 ```shell
-pip install pre-commit
+python scripts/top_tags.py all ../mtg-jamendo-dataset/stats/autotagging/ figures/all.png
+python scripts/top_tags.py mood_theme ../mtg-jamendo-dataset/stats/autotagging/ figures/mood_theme.png
 ```
