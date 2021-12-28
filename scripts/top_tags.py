@@ -27,9 +27,21 @@ PARAMS = {
     }
 }
 
+SIZES = {
+    'wide': {
+        'shape': (12, 2),
+        'label_distance_multiplier': 1.0,
+    },
+    'thesis': {
+        'shape': (12, 8),
+        'label_distance_multiplier': 0.3,
+    }
+}
 
-def main(plot: str, directory: Path, output_file: Path) -> None:
+
+def main(plot: str, directory: Path, output_file: Path, shape: str) -> None:
     params = PARAMS[plot]
+    sizes = SIZES[shape]
 
     tag_list = []
     track_list = []
@@ -42,7 +54,7 @@ def main(plot: str, directory: Path, output_file: Path) -> None:
         tag_list += list(df['tag'])
         track_list += list(df['tracks'])
 
-    plt.figure(figsize=(12, 2))
+    plt.figure(figsize=sizes['shape'])
     plt.style.use('seaborn-whitegrid')
 
     rcParams['font.family'] = 'serif'
@@ -56,8 +68,9 @@ def main(plot: str, directory: Path, output_file: Path) -> None:
         indices = np.arange(params['n'] * i, params['n'] * (i + 1))
         plt.bar(indices, np.array(track_list)[indices], align='center')
 
+    offset = params['label_distance'] * sizes['label_distance_multiplier']
     for i in params['label_idx']:
-        plt.text(i, track_list[i] + params['label_distance'], track_list[i], fontsize=8, horizontalalignment='center')
+        plt.text(i, track_list[i] + offset, track_list[i], fontsize=8, horizontalalignment='center')
 
     plt.xticks(np.arange(len(tag_list)), tag_list, rotation='vertical')
     if params['y_suffix'] == 'k':
@@ -79,10 +92,11 @@ def main(plot: str, directory: Path, output_file: Path) -> None:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                                     description='Plots the amount of tracks per tag')
-    parser.add_argument('plot', choices=PARAMS.keys(), help='Which plot to produce')
-    parser.add_argument('directory', type=Path, help='Stats directory from mtg-jamendo with TSV files')
-    parser.add_argument('output_file', type=Path, help='Figure output file')
+                                     description='Plots the top tags according to number of tracks per tag')
+    parser.add_argument('plot', choices=PARAMS.keys(), help='which plot to produce')
+    parser.add_argument('directory', type=Path, help='stats directory from mtg-jamendo with TSV files')
+    parser.add_argument('output_file', type=Path, help='figure output file')
+    parser.add_argument('--shape', choices=SIZES.keys(), default='wide', help='figure shape')
     args = parser.parse_args()
 
-    main(args.plot, args.directory, args.output_file)
+    main(args.plot, args.directory, args.output_file, args.shape)
