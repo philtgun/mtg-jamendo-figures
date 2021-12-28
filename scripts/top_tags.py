@@ -73,6 +73,7 @@ def main(plot: str, directory: Path, output_file: Path) -> None:
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
 
+    output_file.parent.mkdir(exist_ok=True)
     plt.savefig(output_file, bbox_inches='tight', dpi=150)
     plt.close()
 
