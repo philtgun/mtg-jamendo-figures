@@ -19,7 +19,7 @@ PARAMS = {
     'mood_theme': {
         'categories': ['mood_theme'],
         'n': 56,
-        'ylim': 2000,
+        'ylim': 1800,
         'label_idx': [0, 55],
         'label_distance': 100,
         'y_ticks': np.arange(0, 2000, 500),
